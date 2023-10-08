@@ -1,82 +1,73 @@
-// MOVE BLOCK
-const childBlock = document.querySelector('.child_block')
+/*1) Используя регулярные выражения сделать проверку на валидность gmail почты внутри проекта. 
+Вёрстка уже есть в проекте, надо только добавить фукнционал*/
+document.querySelector('#validation__form').addEventListener('submit', function(event) {
+    event.preventDefault()
+    function validation(form) {
+        function remuveError(input) {
+            const parent = input.parentNode
+            if (parent.classList.contains('error')) {
+                parent.querySelector('.error__label').remove()
+                parent.classList.remove('error')
+            }
+        }
+        // -----------------
+        function createError(input, text) {
+            const parent = input.parentNode
 
-let positionX = 0
-let positionY = 0
+            const errorLabel = document.createElement('label')
+            errorLabel.classList.add('error__label')
+            errorLabel.textContent = text
 
-const move = () => {
-    if (positionX < 449 && positionY === 0) {
-        positionX+=2
-        childBlock.style.left = `${positionX}px`
-        setTimeout(move, 10)
-    } else if (positionX >= 449 && positionY < 449) {
-        positionY+=2
-        childBlock.style.top = `${positionY}px`
-        setTimeout(move, 10)
-    } else if (positionX > 0 && positionY > 0) {
-        positionX-=2
-        childBlock.style.left = `${positionX}px`
-        setTimeout(move, 10)
-    } else if (positionX === 0 && positionY > 0) {
-        positionY-=2
-        childBlock.style.top = `${positionY}px`
-        setTimeout(move, 10)
+            parent.classList.add('error')
+            parent.append(errorLabel)
+        }
+        // -----------------
+        let result = true
+        form.querySelectorAll('input').forEach(input => {
+            remuveError(input)
+            if (input.value === '') {
+                console.log('Field Error');
+                createError(input, 'Поле не заполнено!')
+                result = false
+            }
+        });
+        return result
+    }
+    if (validation(this) === true) {
+        console.log('Форма проверена успешно!');
+    }
+})
+
+const gmailInput = document.querySelector('#gmail_input')
+const gmailButton = document.querySelector('#gmail_button')
+const gmailResult = document.querySelector('#gmail_result')
+
+const regExp = /^\w{6,20}@gmail.com$/
+
+gmailButton.onclick = () => {
+    if (regExp.test(gmailInput.value)) {
+        gmailResult.textContent = 'ok'
+        gmailResult.style.color = 'green'
+    }else{
+        gmailResult.textContent = 'not ok'
+        gmailResult.style.color = 'red'
     }
 }
 
-move()
-
-// STOPWATCH
-const minutesBlock = document.querySelector('#minutes'),
-    secondsBlock = document.querySelector('#seconds'),
-    mlSecondsBlock = document.querySelector('#ml-seconds'),
-    startButton = document.querySelector('#start'),
-    stopButton = document.querySelector('#stop'),
-    resetButton = document.querySelector('#reset')
-
-let interval
-let minutes = 0
-let seconds = 0
-let mlSeconds = 0
-
-const startTimer = () => {
-    mlSeconds++
-    mlSeconds <= 99 && (mlSecondsBlock.innerHTML = mlSeconds)
-    mlSeconds === 100 && (mlSecondsBlock.innerHTML = '00')
-
-    mlSecondsBlock.innerHTML = `0${mlSeconds}`
-    mlSeconds > 9 && (mlSecondsBlock.innerHTML = mlSeconds)
-    if (mlSeconds > 99) {
-        seconds++
-        secondsBlock.innerHTML = `0${seconds}`
-        mlSeconds = 0
+/*2) Используя рекурсию необходимо заставить маленький блок двигаться по родительскому блоку вправо. 
+И изменяйте параметр позиции малого блока (.style.left=${переменная}px).  
+Нужно чтобы маленький блок подвинулся слева на право внутри большого блока и остановился. 
+Вёрстка уже есть в самом проекте.*/
+document.addEventListener('DOMContentLoaded', function() {
+    const parentBlock = document.querySelector('.parent_block')
+    const childBlock = document.querySelector('.child_block')
+    function recursion(position) {
+        childBlock.style.left = position + 'px'
+        if (position < parentBlock.offsetWidth - childBlock.offsetWidth) {
+            setTimeout(function() {
+                recursion(position + 1)
+            }, 10)
+        }
     }
-    seconds > 9 && (secondsBlock.innerHTML = seconds)
-    if (seconds > 59) {
-        minutes++
-        minutesBlock.innerHTML = `0${minutes}`
-        seconds = 0
-        secondsBlock.innerHTML = `0${seconds}`
-    }
-    minutes > 9 && (minutesBlock.innerHTML = minutes)
-}
-
-startButton.onclick = () => {
-    clearInterval(interval)
-    interval = setInterval(startTimer,  10)
-}
-
-stopButton.onclick = () => {
-    clearInterval(interval)
-}
-
-resetButton.onclick = () => {
-    clearInterval(interval)
-    minutes = 0
-    seconds = 0
-    mlSeconds = 0
-    minutesBlock.innerHTML = '00'
-    secondsBlock.innerHTML = '00'
-    mlSecondsBlock.innerHTML = '00'
-}
-
+    recursion(0)
+})
