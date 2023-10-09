@@ -37,7 +37,7 @@ document.querySelector('#validation__form').addEventListener('submit', function(
         console.log('Форма проверена успешно!');
     }
 })
-
+// -----------------
 const gmailInput = document.querySelector('#gmail_input')
 const gmailButton = document.querySelector('#gmail_button')
 const gmailResult = document.querySelector('#gmail_result')
@@ -53,21 +53,17 @@ gmailButton.onclick = () => {
         gmailResult.style.color = 'red'
     }
 }
-
 /*2) Используя рекурсию необходимо заставить маленький блок двигаться по родительскому блоку вправо. 
 И изменяйте параметр позиции малого блока (.style.left=${переменная}px).  
 Нужно чтобы маленький блок подвинулся слева на право внутри большого блока и остановился. 
 Вёрстка уже есть в самом проекте.*/
-document.addEventListener('DOMContentLoaded', function() {
-    const parentBlock = document.querySelector('.parent_block')
-    const childBlock = document.querySelector('.child_block')
-    function recursion(position) {
-        childBlock.style.left = position + 'px'
-        if (position < parentBlock.offsetWidth - childBlock.offsetWidth) {
-            setTimeout(function() {
-                recursion(position + 1)
-            }, 10)
-        }
+const childBlock = document.querySelector('.child_block')
+let position = 0
+const recursion = () => {
+    if (position < 450) {
+        position = position + 2
+        childBlock.style.left = `${position}px`
+        setTimeout(recursion, 10)
     }
-    recursion(0)
-})
+}
+recursion()
