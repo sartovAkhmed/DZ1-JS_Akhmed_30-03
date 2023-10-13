@@ -38,11 +38,10 @@ document.querySelector('#validation__form').addEventListener('submit', function(
     }
 })
 // -----------------
-const gmailInput = document.querySelector('#gmail_input')
-const gmailButton = document.querySelector('#gmail_button')
-const gmailResult = document.querySelector('#gmail_result')
-
-const regExp = /^\w{6,20}@gmail.com$/
+const gmailInput = document.querySelector('#gmail_input'),
+    gmailButton = document.querySelector('#gmail_button'),
+    gmailResult = document.querySelector('#gmail_result'),
+    regExp = /^\w{6,20}@gmail.com$/
 
 gmailButton.onclick = () => {
     if (regExp.test(gmailInput.value)) {
@@ -59,8 +58,8 @@ gmailButton.onclick = () => {
 Нужно чтобы маленький блок подвинулся слева на право внутри большого блока и остановился. 
 Вёрстка уже есть в самом проекте.*/
 const childBlock = document.querySelector('.child_block')
-let positionX = 0
-let positionY = 0
+let positionX = 0,
+    positionY = 0
 const recursion = () => {
     if (positionX < 450 && positionY === 0) {
         positionX += 2
@@ -92,18 +91,17 @@ recursion()
 При нажатии на start повторно она должна продолжить тот счет на котором остановился. 
 Добавить на кнопку reset обнуление счетчика. Обработать все возможные баги при работе счетчика 
 (вёрстка в проекте уже есть) Код писать внутри проекта (home_works.js) */
-const minutesS = document.querySelector('#minutesS')
-const secondsS = document.querySelector('#secondsS')
-const mlSecondsS = document.querySelector('#ml-secondsS')
-// -------------------------
-const start = document.querySelector('#start')
-const stops = document.querySelector('#stop')
-const reset = document.querySelector('#reset')
+const minutesS = document.querySelector('#minutesS'),
+    secondsS = document.querySelector('#secondsS'),
+    mlSecondsS = document.querySelector('#ml-secondsS'),
+    start = document.querySelector('#start'),
+    stops = document.querySelector('#stop'),
+    reset = document.querySelector('#reset')
 
-let stopTime
-let mlSeconds = 0
-let seconds = 0
-let minutes = 0
+let stopTime,
+    mlSeconds = 0,
+    seconds = 0,
+    minutes = 0
 
 const time = () => {
     stopTime = setInterval(() => {
