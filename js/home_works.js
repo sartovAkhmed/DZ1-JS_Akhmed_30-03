@@ -53,17 +53,89 @@ gmailButton.onclick = () => {
         gmailResult.style.color = 'red'
     }
 }
+
 /*2) Используя рекурсию необходимо заставить маленький блок двигаться по родительскому блоку вправо. 
 И изменяйте параметр позиции малого блока (.style.left=${переменная}px).  
 Нужно чтобы маленький блок подвинулся слева на право внутри большого блока и остановился. 
 Вёрстка уже есть в самом проекте.*/
 const childBlock = document.querySelector('.child_block')
-let position = 0
+let positionX = 0
+let positionY = 0
 const recursion = () => {
-    if (position < 450) {
-        position = position + 2
-        childBlock.style.left = `${position}px`
+    if (positionX < 450 && positionY === 0) {
+        positionX += 2
+        childBlock.style.left = `${positionX}px`
+        setTimeout(recursion, 10)
+    }else if (positionX >= 450 && positionY < 450) {
+        positionY+=2
+        childBlock.style.top = `${positionY}px`
+        setTimeout(() => {
+            recursion()
+        }, 10);
+    }else if (positionX > 0 && positionY > 0) {
+        positionX-=2
+        childBlock.style.left = `${positionX}px`
+        setTimeout(() => {
+            recursion()
+        }, 10);
+    }else if (positionX === 0 && positionY > 0) {
+        positionY-=2
+        childBlock.style.top = `${positionY}px`
         setTimeout(recursion, 10)
     }
 }
 recursion()
+
+/* Отобразить на странице цифру 0 , создать 2 кнопки: stop и start
+Если нажать на start то цифра начнет увеличиваться на единицу до 
+того момента пока вы не нажмете на кнопку stop Используйте методы которые мы прошли на уроке. 
+При нажатии на start повторно она должна продолжить тот счет на котором остановился. 
+Добавить на кнопку reset обнуление счетчика. Обработать все возможные баги при работе счетчика 
+(вёрстка в проекте уже есть) Код писать внутри проекта (home_works.js) */
+const minutesS = document.querySelector('#minutesS')
+const secondsS = document.querySelector('#secondsS')
+const mlSecondsS = document.querySelector('#ml-secondsS')
+// -------------------------
+const start = document.querySelector('#start')
+const stops = document.querySelector('#stop')
+const reset = document.querySelector('#reset')
+
+let stopTime
+let mlSeconds = 0
+let seconds = 0
+let minutes = 0
+
+const time = () => {
+    stopTime = setInterval(() => {
+        mlSeconds++
+        mlSecondsS.textContent = mlSeconds
+        if (mlSeconds === 100) {
+            mlSeconds = 0
+            seconds++
+            secondsS.textContent = seconds
+            if (seconds === 60) {
+                seconds = 0
+                minutes++
+                minutesS.textContent = minutes
+                if (minutes === 60) {
+                    minutes = 0
+                }
+            }
+        }
+    }, 10);
+}
+start.onclick = () => {
+    time()
+}
+stops.onclick = () => {
+    clearInterval(stopTime)
+}
+reset.onclick = () => {
+    clearInterval(stopTime)
+    mlSeconds = 0
+    seconds = 0
+    minutes = 0
+    minutesS.textContent = '00'
+    secondsS.textContent = '00'
+    mlSecondsS.textContent = '00'
+}

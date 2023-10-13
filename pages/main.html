@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Секундомер</title>
+</head>
+<body>
+  <h1 id="timer">0:00</h1>
+  <button onclick="startTimer()">Старт</button>
+  <button onclick="stopTimer()">Стоп</button>
+  <button onclick="resetTimer()">Сброс</button>
+
+  <script>
+    let timer;
+    let seconds = 0;
+
+    function startTimer() {
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timer);
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      seconds = 0;
+      updateTimer();
+    }
+
+    function updateTimer() {
+      seconds++;
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      document.getElementById('timer').innerText = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    }
+  </script>
+</body>
+</html>
