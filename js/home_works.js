@@ -63,23 +63,23 @@ let positionX = 0,
 const recursion = () => {
     if (positionX < 450 && positionY === 0) {
         positionX += 2
-        childBlock.style.left = `${positionX}px`
+        childBlock.style.left = positionX + 'px'
         setTimeout(recursion, 10)
     }else if (positionX >= 450 && positionY < 450) {
         positionY+=2
-        childBlock.style.top = `${positionY}px`
+        childBlock.style.top = positionY + 'px'
         setTimeout(() => {
             recursion()
         }, 10);
     }else if (positionX > 0 && positionY > 0) {
         positionX-=2
-        childBlock.style.left = `${positionX}px`
+        childBlock.style.left = positionX + 'px'
         setTimeout(() => {
             recursion()
         }, 10);
     }else if (positionX === 0 && positionY > 0) {
         positionY-=2
-        childBlock.style.top = `${positionY}px`
+        childBlock.style.top = positionY + 'px'
         setTimeout(recursion, 10)
     }
 }
