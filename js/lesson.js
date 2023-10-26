@@ -75,7 +75,7 @@ const converterChanges = (elementValue, targetElement, targetElement2, isTrue) =
                 targetElement2.value = (elementValue.value / response.eur).toFixed(2)
             }else if (isTrue === 'usd'){
                 targetElement.value = (elementValue.value * response.usd).toFixed(2)
-                targetElement2.value = (elementValue.value * response.eur).toFixed(2)
+                targetElement2.value = (elementValue.value * 0.9438).toFixed(2)
             }else{
                 targetElement.value = (elementValue.value * response.eur).toFixed(2)
                 targetElement2.value = (elementValue.value * 1.06).toFixed(2)
@@ -90,3 +90,57 @@ const converterChanges = (elementValue, targetElement, targetElement2, isTrue) =
 converterChanges(somInput, usdInput, eurInput, 'som')
 converterChanges(usdInput, somInput, eurInput, 'usd')
 converterChanges(eurInput, somInput, usdInput, 'eur')
+// ---------------------
+
+const btnPrev = document.querySelector('#btn-prev'),
+    btnNext = document.querySelector('#btn-next'),
+    card = document.querySelector('.card')
+
+let id = 1
+
+const cardFunction = async (id) => {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        const data = await response.json()
+        card.innerHTML = `
+            <p>${data.title}</p>
+            <p style="color: ${data.completed ? 'green' : 'red'}">${data.completed}</p>
+            <span>${data.id}</span>
+        `
+    }
+    catch {
+        console.error(Error);
+    }
+}
+cardFunction(id)
+
+btnNext.onclick = () => {
+    id++
+    cardFunction(id)
+    if (id >= 200) {
+        id = 0
+    }
+}
+btnPrev.onclick = () => {
+    id--
+    cardFunction(id)
+    if (id <= 1) {
+        id = 201
+    }
+}
+
+// --------------
+const postApi = async () => {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts')
+        const data = await response.json()
+        for (let i in data) {
+            const element = data[i];
+            console.table(element);
+        }
+    }
+    catch {
+        console.error(Error);
+    }
+}
+postApi()
