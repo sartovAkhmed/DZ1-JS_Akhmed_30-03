@@ -62,28 +62,26 @@ const somInput = document.querySelector('#som'),
     eurInput = document.querySelector('#eur')
 
 const converterChanges = (elementValue, targetElement, targetElement2, isTrue) => {
-    elementValue.oninput = () => {
-        const request = new XMLHttpRequest()
-        request.open('GET', '../data/converter.json')
-        request.setRequestHeader('Content-type', 'application/json')
-        request.send()
-
-        request.onload = () => {
-            const response = JSON.parse(request.response)
+    elementValue.oninput = async () => {
+        const response = await fetch('../data/converter.json')
+        const data = await response.json()
+        try {
             if (isTrue === 'som') {
-                targetElement.value = (elementValue.value / response.usd).toFixed(2)
-                targetElement2.value = (elementValue.value / response.eur).toFixed(2)
+                targetElement.value = (elementValue.value / data.usd).toFixed(2)
+                targetElement2.value = (elementValue.value / data.eur).toFixed(2)
             }else if (isTrue === 'usd'){
-                targetElement.value = (elementValue.value * response.usd).toFixed(2)
+                targetElement.value = (elementValue.value * data.usd).toFixed(2)
                 targetElement2.value = (elementValue.value * 0.9438).toFixed(2)
             }else{
-                targetElement.value = (elementValue.value * response.eur).toFixed(2)
+                targetElement.value = (elementValue.value * data.eur).toFixed(2)
                 targetElement2.value = (elementValue.value * 1.06).toFixed(2)
             }
             if (elementValue.value === '') {
                 targetElement.value = ''
                 targetElement2.value = ''
             }
+        } catch {
+            alert(Error)
         }
     }
 }
@@ -129,7 +127,7 @@ btnPrev.onclick = () => {
     }
 }
 
-// --------------
+// -------------------
 const postApi = async () => {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/posts')
@@ -144,3 +142,25 @@ const postApi = async () => {
     }
 }
 postApi()
+
+// --------------
+const cityNameInput = document.querySelector('.cityName')
+    city = document.querySelector('.city')
+    temp = document.querySelector('.temp')
+
+const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather'
+const API_KEY = 'e417df62e04d3b1b111abeab19cea714'
+
+const citySearch = () => {
+    cityNameInput.oninput = async (event) => {
+        try {
+            const response = await fetch(`${BASE_URL}?q=${event.target.value}&appid=${API_KEY}`)
+            const data = await response.json()
+            city.innerHTML = data?.name ? data?.name : 'City no searched...'
+            temp.innerHTML = data?.main?.temp ? Math.round(data?.main?.temp - 273) + '&deg;C' : '...'
+        } catch (e) {
+            alert(`Error: ${e.message}`)
+        }
+    }
+}
+citySearch()
