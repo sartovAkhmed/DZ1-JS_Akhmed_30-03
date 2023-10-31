@@ -63,9 +63,9 @@ const somInput = document.querySelector('#som'),
 
 const converterChanges = (elementValue, targetElement, targetElement2, isTrue) => {
     elementValue.oninput = async () => {
-        const response = await fetch('../data/converter.json')
-        const data = await response.json()
         try {
+            const response = await fetch('../data/converter.json')
+            const data = await response.json()
             if (isTrue === 'som') {
                 targetElement.value = (elementValue.value / data.usd).toFixed(2)
                 targetElement2.value = (elementValue.value / data.eur).toFixed(2)
@@ -132,8 +132,8 @@ const postApi = async () => {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/posts')
         const data = await response.json()
-        for (let i in data) {
-            const element = data[i];
+        for (let index in data) {
+            const element = data[index];
             console.table(element);
         }
     }
